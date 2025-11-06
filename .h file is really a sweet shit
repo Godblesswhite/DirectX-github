@@ -1,0 +1,247 @@
+compiler only compiles translation units (each .cpp after preprocessing).
+  // other.cpp
+#include "A.h"
+then A.h is copied again into that file’s translation unit.
+That’s why we use #pragma once or include guards — to prevent double inclusion within the same unit.
+
+damnn  matsu ri 
+Here’s a concrete example showing how two .h files can conflict during compilation if not protected correctly.
+
+❌ Conflict Example (without guards)
+// A.h
+int value = 1;
+
+// B.h
+int value = 2;
+
+// main.cpp
+#include "A.h"
+#include "B.h"
+
+int main() { return value; }
+
+➤ Preprocessed result
+
+When the preprocessor runs, it pastes both headers in:
+
+int value = 1;
+int value = 2;  // <— redefinition error
+int main() { return value; }
+
+➤ Compiler output
+error C2086: 'int value': redefinition
+
+
+Two headers define the same symbol → conflict.
+
+
+
+// A.h
+#pragma once
+extern int valueA;  // declaration only
+
+// B.h
+#pragma once
+extern int valueB;  // declaration only
+
+// A.cpp
+#include "A.h"
+int valueA = 1;
+
+// B.cpp
+#include "B.h"
+int valueB = 2;
+
+// main.cpp
+#include "A.h"
+#include "B.h"
+
+int main() { return valueA + vaw goes out of scope → ~WindowClass() is called automatically.w goes out of scope → ~WindowClass() is called automatically.
+
+#pragma once prevents multiple inclusion.w goes out of scope → ~WindowClass() is called automatically.
+
+The linker sees one definition per symbol → no conflict.
+
+Now:w goes out of scope → ~WindowClass()w goes out of scope → ~WindowClass() is called automatically.called automatically.
+Each .h declares but does not define the variable.
+w goes out of scope → ~WindowClass() is called automatically.
+Each .cpp defines it once.w goes out of scope → ~WindowClass() is called autow goes out of scope → ~WindowClass() is called automatically.matically.
+vw goes out of scope → ~WindowClass() is called automatically.w goes out of scope → ~WindowClass() is called automatically.w goes out of scope → ~WindowClass() is called automatically.w goes out of scope → ~WindowClass() is called automatically.ly.
+At the closing brace (}), w goes out of scope → ~Winw goes out of scope →w goes out of scope → ~WindowClass() is w goes out of scope → ~WindowClass() is called automatically.called automatically. ~WindowClass() is called automatically.nctions.w goes out of scope → ~WindowClass() is called automatically.
+HWND hWnd = CreateWindowEx(
+    0, L"MyWindowClass", L"Example",
+    WS_OVERLAPPEDWINDOW,w goes out of scope → ~WindowClass() is called automatically.w goes out of scope → ~WindowClass() iw goes out of scope → ~WindowClass() is called automatically.automatically.gram has exited the region (At the closing brace (}), w goes out of scope → ~WindowClass() is called automatically.block, function, or file) where that variable was defined.
+When that happens, C++ automatically destroys the object — calling its destructow goes out of scope → ~WindowClass() is called automatically.w goes out of scope → ~WindowClass() is called automatically.ptr
+);w goes out of scope → ~WindowClass() is called automatically.
+“Goes out of scope” means a variable or object’s lifetime ends because the program has exited the region (At the closing brace (}), w goes out of scope → ~WindowClass() is called automatically.block, function, or file) where that variable was defined.
+When that happens, C++ automatically destroys the object — calling its destructor if it has one.
+
+CreateWindowEx returns an HWND — the handle to the new window.
+You use that handle in calls like:
+
+ShowWindow(hWnd, SW_SHOW);
+UpdateWindow(hWnd);
+Common operations with HWND
+Function	Purpose
+GetActivA destructor (~ClassName()) is calA destructor (~ClassName()) is called automatically when an object of that class goes out of scope or is destroyed.
+It’s used to release system resources, memory, or handl“Goes out of scope” means a variable or object’s lifetime ends because the program has exited the region (block, function, or file) where that variable was defined.
+When that happens, C++ automatically destroys the object — calling its destructor if it has one.es allocated by the class.led automatically when an object of that class goes out of scope or is destroyed.
+It’s used to release system rw goes out of scope → ~WindowClass() is called automatically.w goes out of scope → ~WindowClass() is called automatically.w goes out of scope → ~WindowClass() is called automatically. or title
+DestroyWindow(hWnd)	Close a window
+SendMessage(hWnd, WM_CLOSE, …)	Send a message to a window
+
+
+
+
+HWND is only meaningful within the process that created the window.
+
+You should not store or copy it across processes or threads unless explicitly allowed.
+
+Always check for NULL after creation to detect failure:
+
+if (hWnd == NULL) { /* handle error */ }HWND is only meaningful within the process that created the window.
+
+You should not store or copy it across processes or threads unless explicitly allowed.
+
+Always check for NULL after creation to detect failure:
+
+if (hWnd == NULL) { /* handle error */ }handle to a Win32 windowhandle to a Win32 windowhandle
+to a Win32 windowhandle to a Win32 windowhandle to a Win32 windowhandle to a Win32 windowhandle to a Win32 windowhandl
+e to a Win32 windowindow-management and message f
+  unctions.indow-management and message functions.indow-management and message functions.indow-management and message functions.indow-management and message functions.indow-managemen
+t and message functions.indow-management and message functions.indow-management and message functions.indow-management and message functions.indow-management and message functions.indow-management and message functions.
+
+indow-management and message functions.indow-management and message functions.indow-managemen
+  t and message functions.indow-management and messag
+e functions.indow-management and message functions.indow-management and message
+functions.indow-management and message functions.indow-management and message functions.indow-management and message functions.
+indow-management and message functions.indow-management and message functions.indow-management and message functions.indow-management and message funct
+  ions.indow-management and message functions.indow-management and message functions.
+  indow-management and message functions.indow-management and message functions.indow-management and message functions.i
+  ndow-management and message functions.indow-management and message f
+u
+  nctions.indow-management and message functions.indow-management and message functions.indow-management and message functions.indow-management and message functions.indow-man
+  agement and message functions.indow-management and message functions.indow-management and message functions.indow-manag
+  ement and mes
+sage functions.indow-management and message functions.indow-management and message functio
+  ns.indow-management and message function
+  s.indow-management and message functions.indow-management and message functions.indow-management and message functions.indow-man
+  age
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ment and message functions.indow-management and message functions.
+
+
+
+
+HWND hwnd = CreateWindowEx(...);   // returns a handle to a window
+HDC hdc   = GetDC(hwnd);           // returns a handle to a device context
+HICON hIcon = LoadIcon(NULL, IDI_APPLICATION); // returns a handle to an icon
+
+
+
+
+
+
+Generic handle
+
+The base type:
+
+typedef void* HANDLE;
+An abstract ID for a resource.
+
+Managed by the OS.
+
+Used instead of giving programs raw memory pointers.
+Efficient, safe, and flexible for controlling system objects.
+
+Examples:
+
+HANDLE hFile = CreateFile(...);
+HANDLE hThread = CreateThread(...);
+HANDLE hEvent = CreateEvent(...);
+
+
+Different subsystems interpret the handle differently, but all use it as an index into an internal kernel object table.
+
+🔹 Rules
+
+Never dereference a handle — it’s not a valid pointer.
+
+Always close handles when done:
+
+CloseHandle(hFile);
+
+
+(or ReleaseDC, DestroyWindow, etc., depending on type)
+
+Check for invalid handles:
+
+if (hFile == INVALID_HANDLE_VALUE) { /* handle error */ }
+
+
+Handle validity is process-specific; one process’s handle is meaningless to another unless explicitly duplicated via API.
+
+
+Handle types (common)
+Handle Type	Meaning
+HWND	Window handle
+HDC	Device context (for drawing)
+HINSTANCE	Application instance handle
+HICON	Icon resource
+HBRUSH	Brush for GDI drawing
+HANDLE	Generic base type (for files, events, threads, etc.)
+
+All are defined as pointers or typedefs of void* or HANDLE.
+
+
+
+
+
+
+
+
+  You don’t access the resource directly; you pass the handle to Windows API functions, and the system looks up the real object internally.
+
+A handle in Windows (like HWND, HICON, HBRUSH, etc.) is an opaque identifier—basically a small integer or pointer-sized value that represents a resource managed by the Windows kernel or GDI subsystem.
+
+
+
+
+
+
+
+
+
+
