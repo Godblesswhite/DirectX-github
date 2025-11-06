@@ -1,0 +1,383 @@
+At the closing brace (}), w goes out of scope → ~WindowClass() is called automatically.
+void Foo() {
+    WindowClass w;  // created here
+}                   // <— w goes out of scope here
+
+Nested scopes  Nested scopes 
+
+Example 3 — Class member  this son of bitch will take all his son goes to hell
+{
+    int x = 10;
+    {
+        std::string name = "Test";
+    } // name destroyed here (inner scope ends)
+} // x destroyed here (outer scope ends)
+Each block defines a scope; objects inside it are destroyed when the block ends.
+
+
+When a class instance goes out of scope, all its member variables also go out of scope, triggering their destructors in reverse construction order.
+
+class A {
+public:
+    A() {}
+    ~A() { std::cout << "A destroyed\n"; }
+};
+
+class B {
+    A a;
+public:
+    B() {}
+    ~B() { std::cout << "B destroyed\n"; }
+};
+The Windows API, informally known as WinAPI or Win32 API, is the foundational application programming interface that allows computer programs to interact with the Microsoft Windows operating system. It provides a comprehensive set of functions, structures, and callbacks that developers use to create applications that run natively on Windows.
+void run() {
+    B b;
+} // b destroyed → then a destroyed
+
+Example 4 — Static and global objects        that's really stick ,alot,static
+	 
+Static or global objects do not go out of scope when a function ends.
+They live until the program terminates.  
+
+void f() { 
+    static WindowClass w;  // created once, destroyed when program ends
+}
+
+
+The Windows API, informally known as WinAPI or Win32 API, is the foundational application programming interface that allows computer programs to interact with the Microsoft Windows operating system. It provides a comprehensive set of functions, structures, and callbacks that developers use to create applications that run natively on Windows.
+Key aspects of the Windows API include:
+System Interaction: It enables programs to access and manage core operating system features, such as file system operations, process and thread management, memory allocation, and networking.
+User Interface Development: The API offers functions for creating and managing windows, controls (buttons, text boxes, etc.), menus, and other graphical user interface (GUI) elements.
+Hardware Access: It provides interfaces for interacting with various hardware components, including input devices (keyboard, mouse), display adapters, printers, and other peripherals.
+Security and Diagnostics: The API includes functions for managing security settings, user permissions, and for diagnosing application or system problems.
+Language Independence: While traditionally associated with C/C++, the Windows API can be accessed from various programming languages, often through wrappers or language-specific bindings.
+Dynamic Link Libraries (DLLs): Many Windows API functions are implemented within DLL files (e.g., kernel32.dll, user32.dll, gdi32.dll), which are shared libraries loaded by applications at runtime.
+In essence, the Windows API serves as the bridge between an application and the underlying Windows operating system, allowing programs to leverage the full functionality and resources of the platform.
+https://learn.microsoft.com/en-us/windows/win32/apiindex/windows-api-list
+
+“type deps” (short for type definitions) refers to typedefs — lines like:
+typedef unsigned long DWORD;
+typedef unsigned char BYTE;
+typedef unsigned short WORD;These areThese are type aliases, meaning the compiler doesn’t create new types
+typedef long LONG;These are type aliases, meaning the compiler doesn’t create new types
+typedef LONG_PTR LRESULT;
+These are type aliases, meaning the compiler doesn’t create new types — it just gives existing primitive types new names.
+
+Why Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefs
+Why Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefs
+Why Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefs
+Why Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefsWhy Windows uses typedefs
+Windows API was designed to run on different CPU architectures (16-bit, 32-bit, 64-bit).
+So instead of using fixed names like int or long, Microsoft defines its own portable names.
+
+Why Windows uses typedefsWhy Windows uses Windows API was designed to run on different CPU architectures (16-bit, 32-bit, 64-bit).typedefs
+Windows API was designed to run on different CPU architectures (16-bit, 32-bit, 64-bit).Windows API was designed to run on different CPU architectures (16-bit, 32-bit, 64-bit).Windows API was designed to run on different CPU architectures (16-bit, 32-bit, 64-bit).Windows API was designed to run on different CPU architectures (16-bit, 32-bit, 64-bit).
+
+Why Windows uses typedefs
+
+So instead of using fixed names like int or long, Microsoft defines its own portable names.
+So instead of using fixed names like int or long, Microsoft defines its own portable names.So instead of using fixed names like int or long, Microsoft defines its own portable names.
+
+
+
+Why Windows uses typedefs
+
+Windows API was designed to run on different CPU architectures (16-bit, 32-bit, 64-bit).
+So instead of using fixed names like int or long, Microsoft defines its own portable names.
+
+Win32 typedef	Actual type (on x86)	Purpose
+BYTE	unsigned char	8-bit value
+WORD	unsigned short	16-bit value
+DWORD	unsigned long	32-bit value
+LONG_PTR	long long (x64) / long (x86)	Pointer-sized signed integer
+UINT_PTR	Unsigned pointer-sized integer	For WPARAM
+LRESULT	LONG_PTR	Return type of window procedures
+WPARAM	UINT_PTR	Message parameter
+LPARAM	LONG_PTR	Message parameter
+
+
+Example
+DWORD size = 1024;    // same as unsigned long
+BYTE flag = 1;        // same as unsigned char
+WORD code = 0xFFFF;   // same as unsigned short
+These are typedef-based aliases that the Windows SDK uses to unify primitive types across architectures — the foundation for handles, wide chars, and all Win32 data types.
+
+
+DWORD size = 1024;    // same as unsigned long
+BYTE flag = 1;        // same as unsigned char
+WORD code = 0xFFFF;   // same as unsigned short
+These typedefs ensure:
+
+The code works the same on 32-bit and 64-bit builds.
+
+You don’t need to manually adjust for platform-specific integer sizes.
+
+
+LPCWSTR
+PCWSTR
+for example there are types that specify far and near pointers
+Why Windows uses typedefs
+LPCSTRLPCSTRLPCSTRLPCSTRLPCSTR        L P C   STR
+
+
+LPCWSTR	
+A pointer to a constant null-terminated string of 16-bit Unicode characters. For more information, see Character Sets Used By Fonts.
+
+This type is declared in WinNT.h as follows:
+LPCTSTR	
+An LPCWSTR if UNICODE is defined, an LPCSTR otherwise. For more information, see Windows Data Types for Strings.
+
+This type is declared in WinNT.h as follows:
+
+C++
+#ifdef UNICODE
+ typedef LPCWSTR LPCTSTR; 
+#else
+ typedef LPCSTR LPCTSTR;
+#endif
+typedef CONST WCHAR *LPCWSTR;typedef CONST WCHAR *LPCWSTR;  typedef CONST WCHAR *LPCWSTR;  typedef CONST WCHAR *LPCWSTR;
+typedef CONST WCHAR *LPCWSTR;
+typedef CONST WCHAR *LPCWSTR;typedef CONST WCHAR *LPCWSTR;typedef CONST WCHAR *LPCWSTR;typedef CONST WCHAR *LPCWSTR;
+
+
+
+
+Group by Size and Meaning
+Alias	Actual Type	Bits	Easy way to remember
+BYTE	unsigned char	8	“B = 8-bit Byte”
+WORD	unsigned short	16	“Word = 16 bits (old CPU word size)”
+DWORD	unsigned long	32	“Double Word = 2×16 = 32 bits”
+QWORD	unsigned long long	64	“Quad Word = 4×16 = 64 bits”
+
+
+For signed/unsigned integers
+Alias	Actual	Meaning
+INT / UINT	int / unsigned int	Normal integer
+LONG / ULONG	long / unsigned long	32-bit signed/unsigned
+LONG_PTR / ULONG_PTR	pointer-sized	“_PTR” means 32-bit on x86, 64-bit on x64
+
+
+
+
+Mental shortcuts
+
+B / BYTE → 8 bits
+
+W / WORD → 16 bits
+
+DW / DWORD → 32 bits
+
+QW / QWORD → 64 bits
+
+L prefix → “Long” (signed)
+
+U prefix → “Unsigned”
+
+H prefix → “Handle”
+
+LP prefix → “Pointer (Long Pointer)”
+
+C after LP → “const pointer”
+
+_PTR suffix → pointer-size integer (32/64 auto-adjust)
+
+
+Why Windows uses typedefs
+
+
+
+Example for recall:
+B  = 8 bitsHandle types
+HWND, HDC, HANDLE
+pointer-sized
+Indirect identifiers managed by Windows
+W  = 16 bits
+DW = 32 bits
+HW = Handle to Window
+LP = Long Pointer
+
+
+So when you see something like:
+Pointer-sized data
+LONG_PTR, UINT_PTR, WPARAM, LPARAM
+32 or 64 bits depending on platform
+Hold addresses or casted pointers safely
+LPDWORD p;  // pointer to a DWORD
+LPCWSTR s;  // pointer to constant wide string
+
+
+You can decode it instantly.
+All are indeed bit-based typedefs,
+but:
+“WORD means fixed bits; PTR means platform pointer.”
+
+In modern 32- and 64-bit Windows:
+
+typedef const wchar_t* PCWSTR;
+typedef PCWSTR LPCWSTR;
+
+
+So functionally, they are the same.
+
+The L (“Long”) prefix only existed for backward compatibility with 16-bit Windows (where you had “near” and “far” pointers).
+Modern compilers ignore that distinction.
+form a mental modelform a mental model form a mental modelform a mental model     form a mental model
+
+
+
+Configuration manager     Cm
+Executive        Ex
+Hardware abstraction layer       Hal
+1/0 manager        lo
+Kernel core      Ke
+Memory manager      Mm
+Object manager        Ob
+Power manager      Po
+Transaction manager        Tm
+Native system services        Nt     Zw
+
+
+| Variant     | Character Set  | Description                                                                        |
+| ----------- | -------------- | ---------------------------------------------------------------------------------- |
+| `FunctionA` | ANSI           | Uses 8-bit `char` strings (`LPCSTR`)                                               |
+| `FunctionW` | Wide (Unicode) | Uses 16-bit `wchar_t` strings (`LPCWSTR`)                                          |
+| `Function`  | Macro alias    | Expands to either the `A` or `W` version depending on whether `UNICODE` is defined |
+
+Why Windows uses typedefsWhy Windows uses typedefs
+
+Why this system exists
+
+Old (pre-Windows NT) APIs used ANSI (8-bit code pages).
+
+Windows NT introduced Unicode (UTF-16), but for compatibility both versions were kept.
+
+The generic macro (Function) lets the compiler choose automatically.
+Function
+FunctionW
+FunctionAO
+=ANSI
+=UNICODE
+W indicates Unicode encoding and the generic is
+1920×1080
+
+MessageBoxA(NULL, "Hi", "Title", MB_OK);   // ANSI
+MessageBoxW(NULL, L"Hi", L"Title", MB_OK); // Unicode (wide)
+MessageBox(NULL,  TEXT("Hi"), TEXT("Title"), MB_OK);
+Modern best practice
+
+Always use Unicode:
+Step 1: Register a Window Class
+
+This tells Windows what your window is — what icon, cursor, background, and message handler it uses.
+
+WNDCLASS wc = {};
+wc.lpfnWndProc   = WndProc;              // message handler
+wc.hInstance     = hInstance;
+wc.lpszClassName = L"MyWindowClass";
+
+RegisterClass(&wc);
+
+#define UNICODE
+#define _UNICODE
+
+Yes — in the Win32 API, to control or create a window, you must first register a window class, and then create a window from that class.
+and call APIs with wide-string literals (L"...").
+
+Because:
+
+All modern Windows internals use Unicode.
+
+ANSI (A) versions simply convert to Unicode internally, adding overhead and risk of data loss.
+
+
+WNDCLASS wc = {};
+wc.lpfnWndProc   = WndProc;              // message handler
+wc.hInstance     = hInstance;
+wc.lpszClassName = L"MyWindowClass";
+
+RegisterClass(&wc);
+
+Step 2: Create a window instance of that class
+
+Once registered, you can create one or many windows of that class.
+
+
+
+
+Create a window instance of that class
+
+Once registered, you can create one or many windows of that class.
+
+HWND hWnd = CreateWindowEx(
+    0, L"MyWindowClass", L"My Window Title",
+    WS_OVERLAPPEDWINDOW,
+    CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+    NULL, NULL, hInstance, NULL
+);
+
+
+HWND hWnd = CreateWindowEx(
+    0, L"MyWindowClass", L"My Window Title",
+    WS_OVERLAPPEDWINDOW,
+    CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+    NULL, NULL, hInstance, NULL
+);
+Each window is now represented by an H
+
+HWND hWnd = CreateWindowEx(
+    0, L"MyWindowClass", L"My Window Title",
+    WS_OVERLAPPEDWINDOW,
+    CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+    NULL, NULL, hInstance, NULL
+);
+
+
+ 0, L"MyWindowClass", L"My Window Title",
+    WS_OVERLAPPEDWINDOW,
+    CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+    NULL, NULL, hInstance, NULL
+
+
+Control through message handlingCWindows notifies your app via messages (WM_PAINT, WM_KEYDOWN, etc.) sent to your window procedure:o your window procedure:
+
+
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+        case WM_PAINT:       /* draw something */ break;
+        case WM_KEYDOWN:     /* handle key */ break;
+        case WM_DESTROY:     PostQuitMessage(0); return 0;
+    }
+    return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+Run the message loop
+
+MSG msg = {};
+while (GetMessage(&msg, NULL, 0, 0))
+{
+    TranslateMessage(&msg);
+    DispatchMessage(&msg);
+}
+Function   Purpose
+Define what the window is                  RegisterClassEx
+RegisterClass
+Create a specific instance
+CreateWinCommon macros
+Macro	Expands to	Typical Use
+WINAPI	__stdcall	API function declarations
+CALLBACK	__stdcall	Callback functions (like WndProc)
+APIENTRY	__stdcall	Entry points (WinMain)dowEx
+CreateWindow
+Handle system messages
+WndProc
+Showwindow + message loop
+Keep it alive and interactive
+
+WndProc	Handle system messages
+4	ShowWindow + messagWndProc	Handle system messages
+4	ShowWindow + message loop	Keep it alive and interactivelive and interactive
